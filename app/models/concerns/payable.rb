@@ -4,15 +4,15 @@ module Payable
   PAYMENT_SERVICES = {
     sber_bank: {
       client: PaymentClient::SberBank,
-      currency: "ruble"
+      currency: "RUB"
     },
     euro_bank: {
       client: PaymentClient::EuroBank,
-      currency: "euro"
+      currency: "EUR"
     },
     us_bank: {
       client: PaymentClient::USBank,
-      currency: "dollar"
+      currency: "USD"
     }
   }.freeze
 
