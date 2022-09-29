@@ -1,21 +1,19 @@
 class PaymentClient::UsBank
-  def new(payment)
+  def initialize(payment)
     @payment = payment
   end
 
   def process_payment
-    request = {
-      request: {
-        payment_id: @payment.id,
-        amount: @payment.amount,
-        token: generate_enc_token
-      }
-    }
+    request = OpenStruct.new(
+      payment_id: @payment.id,
+      amount: @payment.amount,
+      token: generate_enc_token
+    )
 
-    response = {
-      status: "complete",
+    response = OpenStruct.new(
+      status: "success",
       answer: "Money reseived"
-    }
+    )
 
     @payment.update(status: response.status)
   end
