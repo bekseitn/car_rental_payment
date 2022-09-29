@@ -1,5 +1,5 @@
 module Payment
-  CURRENCIES = %w{ USD EUR RUB }.freeze
+  CURRENCIES = %w{ dollar euro ruble }.freeze
 
   def self.table_name_prefix
     "payment_"

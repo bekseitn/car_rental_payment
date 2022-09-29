@@ -2,8 +2,18 @@ module Payable
   extend ActiveSupport::Concern
 
   PAYMENT_SERVICES = {
-    sber_bank: PaymentClient::SberBank,
-    euro_bank: PaymentClient::EuroBank
+    sber_bank: {
+      client: PaymentClient::SberBank,
+      currency: "ruble"
+    },
+    euro_bank: {
+      client: PaymentClient::EuroBank,
+      currency: "euro"
+    },
+    us_bank: {
+      client: PaymentClient::USBank,
+      currency: "dollar"
+    }
   }.freeze
 
   included do
@@ -13,5 +23,19 @@ module Payable
     validates :currency, inclusion: Payment::CURRENCIES
     validates :amount, presence: true, numericality: { greater_than: 0 }
     validates :order_id, presence: true
+
+    def find_payment_service_by_currency
+      PAYMENT_SERVICES.select { |_, v| v[:currency] == currency }
+    end
+
+    def confirm!
+      service = find_payment_service_by_currency
+
+      unless find_payment_service_by_currency
+        raise "We do not support payment in this currency"
+      end
+
+      service[:client].process_payment(self)
+    end
   end
 end
