@@ -1,12 +1,12 @@
 class Payment::Refund < ApplicationRecord
   include Payable
 
-  validate :refund_amount
+  validate :refund_amount_limit
 
   private
 
-  def refund_amount
-    if amount > order.paid_amount
+  def refund_amount_limit
+    if amount > order.total_paid
       errors.add(:amount, "Refund amount should be less or equal than paids sum for order")
     end
   end

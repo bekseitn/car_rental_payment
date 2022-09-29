@@ -16,8 +16,8 @@ module Payable
     }
   }.with_indifferent_access.freeze
 
-  CURRENCIES = %w{ USD CAD RUB }.freeze
-  PAYMENT_STATUSES = %w{ pending success fail }.freeze
+  CURRENCIES = %w[USD CAD RUB].freeze
+  PAYMENT_STATUSES = %w[pending success fail].freeze
 
   included do
     belongs_to :order
@@ -37,6 +37,22 @@ module Payable
   def confirm!
     service = PAYMENT_SERVICES[payment_service_name]
     service[:client].new(self).process_payment
+  end
+
+  def amount_in_order_currency
+    return amount if currency == order.currency
+
+    convert_to_order_currency
+  end
+
+  def convert_to_order_currency
+    eu_bank = EuCentralBank.new
+
+    # call this before calculating exchange rates
+    # this will download the rates from ECB
+    eu_bank.update_rates
+
+    eu_bank.exchange(amount, currency, order.currency).cents
   end
 
   private
