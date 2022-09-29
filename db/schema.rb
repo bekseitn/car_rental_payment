@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_29_045339) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_29_054543) do
   create_table "cars", force: :cascade do |t|
     t.string "name"
     t.float "price", null: false
@@ -36,6 +36,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_29_045339) do
     t.string "payment_service_name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "order_id"
+    t.string "status"
+    t.index ["order_id"], name: "index_payment_refunds_on_order_id"
   end
 
   create_table "payment_requests", force: :cascade do |t|
@@ -44,6 +47,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_29_045339) do
     t.string "payment_service_name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "order_id"
+    t.string "status"
+    t.index ["order_id"], name: "index_payment_requests_on_order_id"
   end
 
   create_table "users", force: :cascade do |t|
