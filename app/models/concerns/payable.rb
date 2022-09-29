@@ -22,6 +22,7 @@ module Payable
     validates :payment_service_name, inclusion: PAYMENT_SERVICES.stringify_keys.keys
     validates :currency, inclusion: Payment::CURRENCIES
     validates :amount, presence: true, numericality: { greater_than: 0 }
+    validates :status, inclusion: Payment::STATUSES
     validates :order_id, presence: true
 
     def find_payment_service_by_currency
@@ -35,6 +36,7 @@ module Payable
         raise "We do not support payment in this currency"
       end
 
+      self.payment_service_name = service.keys.first
       service[:client].process_payment(self)
     end
   end

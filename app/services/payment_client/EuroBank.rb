@@ -17,7 +17,8 @@ class PaymentClient::EuroBank
       answer: "Money reseived"
     }
 
-    @payment.update(status: response.status)
+    @payment.status = response.status
+    @payment.save
   end
 
   def generate_enc_token
