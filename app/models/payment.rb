@@ -1,20 +1,20 @@
 class Payment < ApplicationRecord
   PAYMENT_SERVICES = {
-    sber_bank: {
-      client: PaymentClient::SberBank,
-      currency: "RUB"
+    uk_bank: {
+      client: PaymentClient::UKBank,
+      currency: "GBP"
     },
-    euro_bank: {
-      client: PaymentClient::EuroBank,
+    canada_bank: {
+      client: PaymentClient::CanadaBank,
       currency: "CAD"
     },
     us_bank: {
-      client: PaymentClient::UsBank,
+      client: PaymentClient::USBank,
       currency: "USD"
     }
   }.with_indifferent_access.freeze
 
-  CURRENCIES = %w[USD CAD RUB].freeze
+  CURRENCIES = %w[USD CAD GBP].freeze
   PAYMENT_STATUSES = %w[pending success fail].freeze
 
   belongs_to :order

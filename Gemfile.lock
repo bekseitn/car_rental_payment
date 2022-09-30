@@ -201,7 +201,7 @@ DEPENDENCIES
   sqlite3 (~> 1.4)
   tzinfo-data
 
-RUBY VERSION
+GBPY VERSION
    ruby 3.1.2p20
 
 BUNDLED WITH
