@@ -13,7 +13,7 @@
 ActiveRecord::Schema[7.0].define(version: 2022_09_29_054543) do
   create_table "cars", force: :cascade do |t|
     t.string "name"
-    t.float "price", null: false
+    t.float "price_per_day", null: false
     t.string "currency", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

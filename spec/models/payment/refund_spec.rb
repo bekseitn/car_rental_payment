@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe Payment::Refund, type: :model do
   let(:user) { create(:user) }
-  let(:car) { create(:car, currency: "USD", price: 100) }
+  let(:car) { create(:car, currency: "USD", price_per_day: 100) }
   let(:order) { create(:order, user: user, car: car) }
 
   context "init payment refund" do

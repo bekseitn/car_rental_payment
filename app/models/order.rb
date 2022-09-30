@@ -23,7 +23,7 @@ class Order < ApplicationRecord
   end
 
   def has_debt?
-    total_paid < car.price
+    total_paid < car.price_per_day
   end
 
   def currency
