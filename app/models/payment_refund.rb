@@ -1,6 +1,4 @@
-class Payment::Refund < ApplicationRecord
-  include Payable
-
+class PaymentRefund < Payment
   validate :refund_amount_limit
 
   private

@@ -4,8 +4,8 @@ class Order < ApplicationRecord
   belongs_to :user
   belongs_to :car
 
-  has_many :payment_refunds, class_name: "Payment::Refund"
-  has_many :payment_requests, class_name: "Payment::Request"
+  has_many :payment_refunds
+  has_many :payment_requests
 
   validates :user, :car, :status, presence: true
   validates :status, inclusion: STATUSES

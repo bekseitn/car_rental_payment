@@ -10,10 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_29_054543) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_29_045314) do
   create_table "cars", force: :cascade do |t|
     t.string "name"
-    t.float "price_per_day", null: false
+    t.decimal "price_per_day", precision: 10, scale: 2, null: false
     t.string "currency", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -30,26 +30,16 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_29_054543) do
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
-  create_table "payment_refunds", force: :cascade do |t|
-    t.float "amount", null: false
+  create_table "payments", force: :cascade do |t|
+    t.decimal "amount", null: false
     t.string "currency", null: false
     t.string "payment_service_name", null: false
+    t.string "type"
+    t.string "status"
+    t.integer "order_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "order_id"
-    t.string "status"
-    t.index ["order_id"], name: "index_payment_refunds_on_order_id"
-  end
-
-  create_table "payment_requests", force: :cascade do |t|
-    t.float "amount", null: false
-    t.string "currency", null: false
-    t.string "payment_service_name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "order_id"
-    t.string "status"
-    t.index ["order_id"], name: "index_payment_requests_on_order_id"
+    t.index ["order_id"], name: "index_payments_on_order_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -63,4 +53,5 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_29_054543) do
 
   add_foreign_key "orders", "cars"
   add_foreign_key "orders", "users"
+  add_foreign_key "payments", "orders"
 end

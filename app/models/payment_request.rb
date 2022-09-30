@@ -1,6 +1,4 @@
-class Payment::Request < ApplicationRecord
-  include Payable
-
+class PaymentRequest < Payment
   validate :deposit_amount_limit
 
   private
