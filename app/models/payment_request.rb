@@ -1,6 +1,10 @@
 class PaymentRequest < Payment
   validate :deposit_amount_limit
 
+  def confirm!
+    payment_client.new(self, "request").process_payment
+  end
+
   private
 
   def deposit_amount_limit

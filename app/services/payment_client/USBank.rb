@@ -1,7 +1,8 @@
 # Does not send a real request to the payment system, just simply imitates the behavior
 class PaymentClient::USBank
-  def initialize(payment)
+  def initialize(payment, payment_type)
     @payment = payment
+    @payment_type = payment_type
   end
 
   def process_payment
@@ -10,7 +11,8 @@ class PaymentClient::USBank
       data: {
         payment_id: @payment.id,
         amount: @payment.amount,
-        token: generate_enc_token
+        token: generate_enc_token,
+        payment_type: @payment_type
       }
     )
 

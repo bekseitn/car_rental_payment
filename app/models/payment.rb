@@ -15,6 +15,7 @@ class Payment < ApplicationRecord
   }.with_indifferent_access.freeze
 
   PAYMENT_STATUSES = %w[pending success fail].freeze
+  AVAILABLE_CURRENCIES = %w[USD CAD GBR].freeze
 
   belongs_to :order
 
@@ -25,14 +26,13 @@ class Payment < ApplicationRecord
 
   validates :payment_service_name, inclusion: PAYMENT_SERVICES.keys
   # The available list of currencies we got from the "money" gem
-  validates :currency, inclusion: Money::Currency.map(&:iso_code)
+  validates :currency, inclusion: AVAILABLE_CURRENCIES
   validates :amount, presence: true, numericality: { greater_than: 0 }
   validates :status, allow_blank: true, inclusion: PAYMENT_STATUSES
   validates :order_id, presence: true
 
-  def confirm!
-    service = PAYMENT_SERVICES[payment_service_name]
-    service[:client].new(self).process_payment
+  def payment_client
+    @service ||= PAYMENT_SERVICES[payment_service_name][:client]
   end
 
   def amount_in_order_currency
