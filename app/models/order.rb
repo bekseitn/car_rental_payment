@@ -1,3 +1,5 @@
+# The main class that combines user and rental car data.
+# Payment and refunds are process for this instance of the object.
 class Order < ApplicationRecord
   STATUSES = %w[pending cancelled completed reversed].freeze
 

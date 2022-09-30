@@ -1,3 +1,5 @@
+# Model for pay order. The user can pay with several deposits in different currencies.
+# The amount of all deposits cannot exceed the price of the order.
 class PaymentRequest < Payment
   validate :deposit_amount_limit
 

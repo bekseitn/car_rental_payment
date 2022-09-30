@@ -1,3 +1,4 @@
+# Payment refund model. We can return to the user all or part of the amount paid in a different currency.
 class PaymentRefund < Payment
   validate :refund_amount_limit
 

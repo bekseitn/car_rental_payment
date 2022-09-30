@@ -1,3 +1,5 @@
+# Parent class for payment requests and redunds.
+# Keep the logic of searching the payment system for the selected currency and converting amount into the currency of the order.
 class Payment < ApplicationRecord
   PAYMENT_SERVICES = {
     uk_bank: {
@@ -25,7 +27,6 @@ class Payment < ApplicationRecord
   before_validation :set_payment_service_name
 
   validates :payment_service_name, inclusion: PAYMENT_SERVICES.keys
-  # The available list of currencies we got from the "money" gem
   validates :currency, inclusion: AVAILABLE_CURRENCIES
   validates :amount, presence: true, numericality: { greater_than: 0 }
   validates :status, allow_blank: true, inclusion: PAYMENT_STATUSES
@@ -46,6 +47,7 @@ class Payment < ApplicationRecord
 
     # call this before calculating exchange rates
     # this will download the rates from ECB
+    # TODO move to controller and run only once before calculating currency difference
     eu_bank.update_rates
 
     eu_bank.exchange(amount, currency, order.currency).cents
