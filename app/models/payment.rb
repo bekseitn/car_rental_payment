@@ -14,7 +14,6 @@ class Payment < ApplicationRecord
     }
   }.with_indifferent_access.freeze
 
-  CURRENCIES = %w[USD CAD GBP].freeze
   PAYMENT_STATUSES = %w[pending success fail].freeze
 
   belongs_to :order
@@ -24,8 +23,9 @@ class Payment < ApplicationRecord
 
   before_validation :set_payment_service_name
 
-  validates :payment_service_name, inclusion: PAYMENT_SERVICES.stringify_keys.keys
-  validates :currency, inclusion: CURRENCIES
+  validates :payment_service_name, inclusion: PAYMENT_SERVICES.keys
+  # The available list of currencies we got from the "money" gem
+  validates :currency, inclusion: Money::Currency.map(&:iso_code)
   validates :amount, presence: true, numericality: { greater_than: 0 }
   validates :status, allow_blank: true, inclusion: PAYMENT_STATUSES
   validates :order_id, presence: true

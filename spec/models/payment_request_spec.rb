@@ -27,7 +27,7 @@ RSpec.describe PaymentRequest, type: :model do
 
     it "pay deposit with multiple currency" do
       usd_request = PaymentRequest.create(order: order, currency: "USD", amount: 30, status: "pending")
-      eu_request = PaymentRequest.create(order: order, currency: "CAD", amount: 10, status: "pending")
+      cad_request = PaymentRequest.create(order: order, currency: "CAD", amount: 10, status: "pending")
 
       order.payment_requests.each(&:confirm!)
       order.reload
@@ -36,8 +36,8 @@ RSpec.describe PaymentRequest, type: :model do
         expect(payment_request.status).to eq("success")
       end
 
-      expect(order.total_paid).not_to eq(usd_request.amount + eu_request.amount)
-      expect(order.total_paid).to eq(usd_request.amount_in_order_currency + eu_request.amount_in_order_currency)
+      expect(order.total_paid).not_to eq(usd_request.amount + cad_request.amount)
+      expect(order.total_paid).to eq(usd_request.amount_in_order_currency + cad_request.amount_in_order_currency)
       expect(order.has_debt?).to be_truthy
 
       # can't pay more than the car rental price_per_day

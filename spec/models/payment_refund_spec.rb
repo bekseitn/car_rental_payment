@@ -31,7 +31,7 @@ RSpec.describe PaymentRefund, type: :model do
       PaymentRequest.create(order: order, currency: "USD", amount: 100, status: "success")
 
       usd_refund = PaymentRefund.create(order: order, currency: "USD", amount: 30, status: "pending")
-      eu_refund = PaymentRefund.create(order: order, currency: "CAD", amount: 10, status: "pending")
+      cad_refund = PaymentRefund.create(order: order, currency: "CAD", amount: 10, status: "pending")
 
       order.payment_refunds.each(&:confirm!)
       order.reload
@@ -40,7 +40,7 @@ RSpec.describe PaymentRefund, type: :model do
         expect(payment_refund.status).to eq("success")
       end
 
-      expect(order.total_paid).to eq(100 - usd_refund.amount_in_order_currency - eu_refund.amount_in_order_currency)
+      expect(order.total_paid).to eq(100 - usd_refund.amount_in_order_currency - cad_refund.amount_in_order_currency)
       expect(order.has_debt?).to be_truthy
 
       # can't pay more than user paid before
