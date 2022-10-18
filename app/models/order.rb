@@ -1,7 +1,12 @@
 # The main class that combines user and rental car data.
 # Payment and refunds are process for this instance of the object.
 class Order < ApplicationRecord
-  STATUSES = %w[pending cancelled completed reversed].freeze
+  enum status: {
+    pending: 0,
+    cancelled: 1,
+    completed: 2,
+    reversed: 3
+  }
 
   belongs_to :user
   belongs_to :car
@@ -10,7 +15,6 @@ class Order < ApplicationRecord
   has_many :payment_requests
 
   validates :user, :car, :status, presence: true
-  validates :status, inclusion: STATUSES
 
   def total_paid
     payment_requests_sum - payment_refunds_sum

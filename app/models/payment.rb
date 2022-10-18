@@ -16,20 +16,21 @@ class Payment < ApplicationRecord
     }
   }.with_indifferent_access.freeze
 
-  PAYMENT_STATUSES = %w[pending success fail].freeze
   AVAILABLE_CURRENCIES = %w[USD CAD GBR].freeze
 
-  belongs_to :order
+  enum status: {
+    pending: 0,
+    completed: 1,
+    failed: 2
+  }
 
-  scope :completed, ->{ where(status: "success") }
-  scope :failed, ->{ where(status: "fail") }
+  belongs_to :order
 
   before_validation :set_payment_service_name
 
   validates :payment_service_name, inclusion: PAYMENT_SERVICES.keys
   validates :currency, inclusion: AVAILABLE_CURRENCIES
   validates :amount, presence: true, numericality: { greater_than: 0 }
-  validates :status, allow_blank: true, inclusion: PAYMENT_STATUSES
   validates :order_id, presence: true
 
   def payment_client

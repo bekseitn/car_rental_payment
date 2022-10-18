@@ -14,7 +14,7 @@ RSpec.describe PaymentRequest, type: :model do
       order.reload
 
       order.payment_requests.each do |payment_request|
-        expect(payment_request.status).to eq("success")
+        expect(payment_request.status).to eq("completed")
       end
 
       expect(order.total_paid).to eq(70)
@@ -34,7 +34,7 @@ RSpec.describe PaymentRequest, type: :model do
       order.reload
 
       order.payment_requests.each do |payment_request|
-        expect(payment_request.status).to eq("success")
+        expect(payment_request.status).to eq("completed")
       end
 
       expect(order.total_paid).not_to eq(40)
@@ -43,7 +43,7 @@ RSpec.describe PaymentRequest, type: :model do
     end
 
     it "can't pay more than user paid before" do
-      PaymentRequest.create(order: order, currency: "USD", amount: 100, status: "success")
+      PaymentRequest.create(order: order, currency: "USD", amount: 100, status: "completed")
       payment_request = PaymentRequest.new(order: order, currency: "CAD", amount: 100, status: "pending")
       expect(payment_request.valid?).to be_falsey
     end

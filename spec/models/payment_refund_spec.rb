@@ -7,7 +7,7 @@ RSpec.describe PaymentRefund, type: :model do
 
   context "payment refund" do
     it "return part of the paid sum in the same currency" do
-      PaymentRequest.create(order: order, currency: "USD", amount: 100, status: "success")
+      PaymentRequest.create(order: order, currency: "USD", amount: 100, status: "completed")
 
       PaymentRefund.create(order: order, currency: "USD", amount: 30, status: "pending")
       PaymentRefund.create(order: order, currency: "USD", amount: 10, status: "pending")
@@ -16,7 +16,7 @@ RSpec.describe PaymentRefund, type: :model do
       order.reload
 
       order.payment_refunds.each do |payment_refund|
-        expect(payment_refund.status).to eq("success")
+        expect(payment_refund.status).to eq("completed")
       end
 
       expect(order.total_paid).to eq(60)
@@ -28,7 +28,7 @@ RSpec.describe PaymentRefund, type: :model do
     end
 
     it "return part of the paid sum in another currency" do
-      PaymentRequest.create(order: order, currency: "USD", amount: 100, status: "success")
+      PaymentRequest.create(order: order, currency: "USD", amount: 100, status: "completed")
 
       PaymentRefund.create(order: order, currency: "USD", amount: 30, status: "pending")
       PaymentRefund.create(order: order, currency: "CAD", amount: 10, status: "pending")
@@ -38,7 +38,7 @@ RSpec.describe PaymentRefund, type: :model do
       order.reload
 
       order.payment_refunds.each do |payment_refund|
-        expect(payment_refund.status).to eq("success")
+        expect(payment_refund.status).to eq("completed")
       end
 
       expect(order.total_paid).to eq(100 - order.payment_refunds_sum)
@@ -46,7 +46,7 @@ RSpec.describe PaymentRefund, type: :model do
     end
 
     it "can't pay more than user paid before" do
-      PaymentRequest.create(order: order, currency: "USD", amount: 100, status: "success")
+      PaymentRequest.create(order: order, currency: "USD", amount: 100, status: "completed")
       payment_refund = PaymentRefund.new(order: order, currency: "CAD", amount: 1000, status: "pending")
       expect(payment_refund.valid?).to be_falsey
     end

@@ -17,7 +17,7 @@ class PaymentClient::CanadaBank
     )
 
     response = OpenStruct.new(
-      status: "success",
+      status: "completed",
       header: {},
       body: "Money reseived"
     )
