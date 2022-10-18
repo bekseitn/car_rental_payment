@@ -5,7 +5,6 @@ class CreatePayments < ActiveRecord::Migration[7.0]
       t.string :currency, null: false
       t.string :payment_service_name, null: false
       t.string :type
-      t.string :status
       t.references :order, null: false, foreign_key: true
 
       t.timestamps

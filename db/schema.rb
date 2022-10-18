@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_29_045314) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_18_050135) do
   create_table "cars", force: :cascade do |t|
     t.string "name"
     t.decimal "price_per_day", precision: 10, scale: 2, null: false
@@ -20,12 +20,12 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_29_045314) do
   end
 
   create_table "orders", force: :cascade do |t|
-    t.string "status"
     t.date "date"
     t.integer "user_id", null: false
     t.integer "car_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "status", default: 0
     t.index ["car_id"], name: "index_orders_on_car_id"
     t.index ["user_id"], name: "index_orders_on_user_id"
   end
@@ -35,10 +35,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_29_045314) do
     t.string "currency", null: false
     t.string "payment_service_name", null: false
     t.string "type"
-    t.string "status"
     t.integer "order_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "status", default: 0
     t.index ["order_id"], name: "index_payments_on_order_id"
   end
 
