@@ -6,6 +6,12 @@ RSpec.describe PaymentRefund, type: :model do
   let(:order) { create(:order, user: user, car: car) }
 
   context "payment refund" do
+    it "should not create with invalid status" do
+      expect { PaymentRefund.new(order: order, currency: "USD", amount: 100, status: "testing") }
+        .to raise_error(ArgumentError)
+        .with_message(/is not a valid status/)
+    end
+
     it "return part of the paid sum in the same currency" do
       PaymentRequest.create(order: order, currency: "USD", amount: 100, status: "completed")
 

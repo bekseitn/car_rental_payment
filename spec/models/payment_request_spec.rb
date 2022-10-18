@@ -6,6 +6,12 @@ RSpec.describe PaymentRequest, type: :model do
   let(:order) { create(:order, user: user, car: car) }
 
   context "payment request" do
+    it "should not create with invalid status" do
+      expect { PaymentRequest.new(order: order, currency: "USD", amount: 100, status: "testing") }
+        .to raise_error(ArgumentError)
+        .with_message(/is not a valid status/)
+    end
+
     it "can pay deposit with order currency" do
       PaymentRequest.create(order: order, currency: "USD", amount: 30, status: "pending")
       PaymentRequest.create(order: order, currency: "USD", amount: 40, status: "pending")
